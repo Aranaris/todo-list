@@ -1,0 +1,1 @@
+(()=>{"use strict";(()=>{const e=document.querySelector("#content"),t=(e=>{let t=[];return{getName:()=>"Untitled Project",getTasks:()=>t,addTask:e=>{t.push(e)}}})(),n=document.createElement("div");n.classList.add("project-container"),n.textContent=t.getName(),e.appendChild(n)})(),console.log("hello world")})();
