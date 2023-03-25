@@ -1,5 +1,6 @@
 import { todoTask, project, projectList } from "./objects";
 import { createTestData } from "./objects";
+import generateTaskForm from "./forms";
 
 const newList = createTestData();
 
@@ -20,6 +21,7 @@ const updateProjectDisplay = (projectName, currentProjects) => {
             projectDisplay.appendChild(taskDisplay);
 
         }
+        projectDisplay.appendChild(generateTaskForm());
     } else {
         const defaultProject = project('Untitled Project');
         projectDisplay.textContent = defaultProject.getName();

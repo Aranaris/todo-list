@@ -1,10 +1,12 @@
 const todoTask = (title) => {
-    let description = '';
-    let dueDate = '';
-    let priority = undefined;
-    let notes = '';
-    let checklist = false;
-    const getTitle = () => title;
+    let _description = '';
+    let _dueDate = '';
+    let _priority = undefined;
+    let _notes = '';
+    let _checklist = false;
+    let _title = title;
+
+    const getTitle = () => _title;
 
     return {getTitle};
 };
