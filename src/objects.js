@@ -1,14 +1,45 @@
+import endOfToday from "date-fns/endOfToday";
+import format from "date-fns/format";
+
 const todoTask = (title) => {
     let _description = '';
-    let _dueDate = '';
+    let _dueDate = endOfToday();
     let _priority = undefined;
-    let _notes = '';
+    let _notes = [];
     let _checklist = false;
     let _title = title;
 
     const getTitle = () => _title;
+    const getDescription = () => _description;
+    const setDescription = (description) => _description = description;
+    const getPriority = () => _priority;
+    const setPriority = (priority) => _priority = priority;
+    const addNote = (note) => _notes.push(note);
+    const getNote = (index) => {
+        if (index) {
+            return _notes[index];
+        } else {
+            return _notes;
+        }
+    }
+    const setCompletion = () => _checklist = !_checklist;
+    const getCompletion = () => _checklist;
+    const getDueDate = () => format(_dueDate, 'MMM dd, yyyy (ccc)');
+    const setDueDate = (year, month, day) => _dueDate = new Date(year, month, day);
 
-    return {getTitle};
+    return {
+        getTitle, 
+        getDescription,
+        setDescription,
+        getPriority,
+        setPriority,
+        addNote,
+        getNote,
+        setCompletion,
+        getCompletion,
+        getDueDate, 
+        setDueDate
+    };
 };
 
 const project = (name) => {
@@ -56,7 +87,9 @@ const createTestData = () => {
     const testProject2 = project('Test Project 2');
 
     const testTask1 = todoTask('Task One');
+    testTask1.setDueDate(2012, 5, 10);
     const testTask2 = todoTask('Task Two');
+    testTask2.setDueDate(1999, 10, 30);
     const testTask3 = todoTask('Task Three');
 
     testProject1.addTask(testTask1);

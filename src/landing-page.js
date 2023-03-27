@@ -16,8 +16,9 @@ const updateProjectDisplay = (projectName, currentProjects) => {
         for (let task of newProject.getTasks()) {
             const taskDisplay = document.createElement('div');
             taskDisplay.dataset.title = task.getTitle();
+            taskDisplay.dataset.dueDate = task.getDueDate();
             taskDisplay.className = 'task-container'
-            taskDisplay.textContent = task.getTitle();
+            taskDisplay.textContent = `${task.getTitle()} || Due: ${task.getDueDate()}`;
             projectDisplay.appendChild(taskDisplay);
 
         }

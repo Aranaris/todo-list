@@ -4,7 +4,7 @@ const generateTaskForm = () => {
     const newTaskForm = document.createElement('form');
     newTaskForm.className = 'new-task-container';
     newTaskForm.setAttribute('method', 'post');
-    newTaskForm.setAttribute('action', 'submit.js');
+    // newTaskForm.setAttribute('action', 'submit.js');
 
     const taskTitle = document.createElement('input');
     taskTitle.setAttribute('type', 'text');
