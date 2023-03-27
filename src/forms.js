@@ -1,22 +1,40 @@
 import { todoTask, project, projectList } from "./objects";
+import { updateProjectDisplay } from "./landing-page";
 
-const generateTaskForm = () => {
-    const newTaskForm = document.createElement('form');
+const generateTaskForm = (newProject, currentProjects) => {
+    const newTaskForm = document.createElement('div');
     newTaskForm.className = 'new-task-container';
-    newTaskForm.setAttribute('method', 'post');
+    // newTaskForm.setAttribute('method', 'post');
     // newTaskForm.setAttribute('action', 'submit.js');
+
+    const taskTitleLabel = document.createElement('label');
+    taskTitleLabel.setAttribute('for','title');
+    taskTitleLabel.innerText = 'New Task Title: ';
 
     const taskTitle = document.createElement('input');
     taskTitle.setAttribute('type', 'text');
-    taskTitle.setAttribute('name', 'Title');
+    taskTitle.setAttribute('id', 'title');
+    taskTitle.setAttribute('name', 'title');
     taskTitle.setAttribute('placeholder', 'New Task');
+
+    const taskDueDate = document.createElement('input');
+    taskDueDate.setAttribute('type', 'date');
+    taskDueDate.setAttribute('name', 'Due');
+    taskDueDate.setAttribute('id', 'dueDate');
 
     const submitTask = document.createElement('input');
     submitTask.setAttribute('type', 'submit');
     submitTask.setAttribute('value', 'Submit');
 
-    newTaskForm.append(taskTitle, submitTask);
+    submitTask.addEventListener('click', (event) => {
+        let newTask = todoTask(taskTitle.value);
+        newProject.addTask(newTask);
+        updateProjectDisplay(newProject.getName(), currentProjects);
+    });
 
+    newTaskForm.append(taskTitle, taskDueDate, submitTask);
+
+    
     return newTaskForm;
 }
 
@@ -26,5 +44,7 @@ const generateProjectForm = () => {
     
     return newProjectForm;
 }
+
+
 
 export default generateTaskForm;

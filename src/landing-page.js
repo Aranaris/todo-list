@@ -22,7 +22,7 @@ const updateProjectDisplay = (projectName, currentProjects) => {
             projectDisplay.appendChild(taskDisplay);
 
         }
-        projectDisplay.appendChild(generateTaskForm());
+        projectDisplay.appendChild(generateTaskForm(newProject, currentProjects));
     } else {
         const defaultProject = project('Untitled Project');
         projectDisplay.textContent = defaultProject.getName();
@@ -36,4 +36,7 @@ const pageLoad = () => {
     updateProjectDisplay('Test Project 2', newList);
 }
 
-export default pageLoad;
+export {
+    pageLoad,
+    updateProjectDisplay,
+};
