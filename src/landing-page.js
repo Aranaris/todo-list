@@ -29,14 +29,34 @@ const updateProjectDisplay = (projectName, currentProjects) => {
     }
 
     content.appendChild(projectDisplay);
-}
+};
 
+const updateProjectList = (currentProjects) => {
+    const content = document.querySelector('#content');
+    const projectListContainer = document.createElement('div');
+    projectListContainer.className = 'project-list-container';
+    const allProjects = currentProjects.getAllProjects();
+    for (const i in allProjects) {
+        let projectButton = document.createElement('button');
+        projectButton.setAttribute('id',`$(allProjects[i].getName())-button`);
+        projectButton.innerText = allProjects[i].getName();
+        projectListContainer.appendChild(projectButton);
+        projectButton.addEventListener('click', (event) => {
+            updateProjectDisplay(allProjects[i].getName(), currentProjects);
+            updateProjectList(currentProjects);
+        })
+    }
+
+    content.appendChild(projectListContainer);
+}
 
 const pageLoad = () => {
     updateProjectDisplay('Test Project 2', newList);
-}
+    updateProjectList(newList);
+};
 
 export {
     pageLoad,
     updateProjectDisplay,
+    updateProjectList
 };

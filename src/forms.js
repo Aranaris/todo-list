@@ -1,5 +1,5 @@
 import { todoTask, project, projectList } from "./objects";
-import { updateProjectDisplay } from "./landing-page";
+import { updateProjectDisplay, updateProjectList } from "./landing-page";
 
 const generateTaskForm = (newProject, currentProjects) => {
     const newTaskForm = document.createElement('div');
@@ -28,8 +28,12 @@ const generateTaskForm = (newProject, currentProjects) => {
 
     submitTask.addEventListener('click', (event) => {
         let newTask = todoTask(taskTitle.value);
+        if (taskDueDate.value) {
+            newTask.setDueDate(taskDueDate.value);
+        }
         newProject.addTask(newTask);
         updateProjectDisplay(newProject.getName(), currentProjects);
+        updateProjectList(currentProjects);
     });
 
     newTaskForm.append(taskTitle, taskDueDate, submitTask);

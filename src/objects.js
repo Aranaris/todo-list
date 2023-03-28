@@ -1,5 +1,6 @@
 import endOfToday from "date-fns/endOfToday";
 import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 
 const todoTask = (title) => {
     let _description = '';
@@ -25,7 +26,7 @@ const todoTask = (title) => {
     const setCompletion = () => _checklist = !_checklist;
     const getCompletion = () => _checklist;
     const getDueDate = () => format(_dueDate, 'MMM dd, yyyy (ccc)');
-    const setDueDate = (year, month, day) => _dueDate = new Date(year, month, day);
+    const setDueDate = (date) => _dueDate =  parseISO(date);
 
     return {
         getTitle, 
@@ -87,9 +88,9 @@ const createTestData = () => {
     const testProject2 = project('Test Project 2');
 
     const testTask1 = todoTask('Task One');
-    testTask1.setDueDate(2012, 5, 10);
+    testTask1.setDueDate('2000-04-21');
     const testTask2 = todoTask('Task Two');
-    testTask2.setDueDate(1999, 10, 30);
+    testTask2.setDueDate('1980-11-03');
     const testTask3 = todoTask('Task Three');
 
     testProject1.addTask(testTask1);
