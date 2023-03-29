@@ -49,12 +49,34 @@ const project = (name) => {
 
     const setName = (name) => _name = name;
     const getName = () => _name;
+    const getTaskByName = (taskName) => {
+        if (_tasks.length >= 1) {
+            for (let i in _tasks) {
+                if (_tasks[i].getTitle() === taskName) {
+                    return _tasks[i];
+                }
+            } 
+        } else {
+                return 'ERROR';
+        }
+    }
+    const removeTask = (taskName) => {
+        if (_tasks.length >= 1) {
+            for (let i in _tasks) {
+                if (_tasks[i].getTitle() === taskName) {
+                    return _tasks.splice(i, 1);
+                }
+            } 
+        } else {
+                return 'ERROR NO TASKS';
+        }
+    }
     const getTasks = () => _tasks;
     const addTask = (newTask) => {
         _tasks.push(newTask);
     }
 
-    return {setName, getName, getTasks, addTask};
+    return {setName, getName, getTaskByName, removeTask, getTasks, addTask};
 };
 
 const projectList = () => {

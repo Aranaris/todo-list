@@ -1,7 +1,7 @@
 import { todoTask, project, projectList } from "./objects";
 import { updateProjectDisplay, updateProjectList } from "./landing-page";
 
-const generateTaskForm = (newProject, currentProjects) => {
+const generateTaskForm = (newProject, currentProjects, existingTask) => {
     const newTaskForm = document.createElement('div');
     newTaskForm.className = 'new-task-container';
     // newTaskForm.setAttribute('method', 'post');
@@ -9,13 +9,12 @@ const generateTaskForm = (newProject, currentProjects) => {
 
     const taskTitleLabel = document.createElement('label');
     taskTitleLabel.setAttribute('for','title');
-    taskTitleLabel.innerText = 'New Task Title: ';
+    
 
     const taskTitle = document.createElement('input');
     taskTitle.setAttribute('type', 'text');
     taskTitle.setAttribute('id', 'title');
     taskTitle.setAttribute('name', 'title');
-    taskTitle.setAttribute('placeholder', 'New Task');
 
     const taskDueDate = document.createElement('input');
     taskDueDate.setAttribute('type', 'date');
@@ -26,17 +25,23 @@ const generateTaskForm = (newProject, currentProjects) => {
     submitTask.setAttribute('type', 'submit');
     submitTask.setAttribute('value', 'Submit');
 
-    submitTask.addEventListener('click', (event) => {
-        let newTask = todoTask(taskTitle.value);
-        if (taskDueDate.value) {
-            newTask.setDueDate(taskDueDate.value);
-        }
-        newProject.addTask(newTask);
-        updateProjectDisplay(newProject.getName(), currentProjects);
-        updateProjectList(currentProjects);
-    });
+    if (existingTask) {
+        taskTitleLabel.innerText = 'Update Task Title: ';
+    } else {
+        taskTitleLabel.innerText = 'Create New Task: ';
+        taskTitle.setAttribute('placeholder', 'Task Title');
+        submitTask.addEventListener('click', (event) => {
+            let newTask = todoTask(taskTitle.value);
+            if (taskDueDate.value) {
+                newTask.setDueDate(taskDueDate.value);
+            }
+            newProject.addTask(newTask);
+            updateProjectDisplay(newProject.getName(), currentProjects);
+        });
+    }
 
-    newTaskForm.append(taskTitle, taskDueDate, submitTask);
+
+    newTaskForm.append(taskTitleLabel, taskTitle, taskDueDate, submitTask);
 
     
     return newTaskForm;
