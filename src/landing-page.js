@@ -44,23 +44,67 @@ const updateProjectDisplay = (projectName, currentProjects) => {
 
 const updateTaskDisplay = (task, currentProject, currentProjects) => {
     let taskDiv = document.createElement('div');
+    taskDiv.id = task.getID();
     taskDiv.dataset.title = task.getTitle();
     taskDiv.dataset.dueDate = task.getDueDate();
     taskDiv.className = 'task-container';
     taskDiv.textContent = `${task.getTitle()} || Due: ${task.getDueDate()}`;
 
+    let showTaskDetails = document.createElement('div');
+    showTaskDetails.className = 'show-task-details-button';
+    showTaskDetails.id = `${task.getID()}-details-button`;
+    showTaskDetails.textContent = '...';
+    showTaskDetails.addEventListener('click', () => {
+        expandTask(task);
+    })
+
+
     let removeTaskButton = document.createElement('button');
     removeTaskButton.className = 'remove-task-button';
-    removeTaskButton.dataset.task = task.getTitle();
+    removeTaskButton.dataset.id = task.getID();
     removeTaskButton.textContent = 'X';
     removeTaskButton.addEventListener('click', () => {
-        currentProject.removeTask(task.getTitle());
+        currentProject.removeTask(task.getID());
         updateProjectDisplay(currentProject.getName(), currentProjects);
     })
 
-    taskDiv.appendChild(removeTaskButton);
+    let taskDetails = document.createElement('div');
+    taskDetails.className = 'show-task-details';
+    taskDetails.id = `${task.getID()}-details`;
+    taskDetails.dataset.expanded = 0;
+
+    taskDiv.append(showTaskDetails, removeTaskButton, taskDetails);
 
     return taskDiv;
+}
+
+const expandTask = (task) => {
+    let taskDetailsContainer = document.querySelector(`#${task.getID()}-details`);
+    
+    if (taskDetailsContainer.dataset.expanded == 0) {
+        let taskDescription = document.createElement('div');
+        taskDescription.className = 'task-description';
+        taskDescription.innerText = task.getDescription();
+
+        let taskPriority = document.createElement('div');
+        taskPriority.className = 'task-priority';
+        taskPriority.innerText = task.getPriority();
+
+        let taskCompleted = document.createElement('input');
+        taskCompleted.setAttribute('name', 'task-completed');
+        taskCompleted.setAttribute('id', `${task.getID()}-completed`);
+        taskCompleted.setAttribute('type', 'checkbox');
+        let taskCompletedLabel = document.createElement('label');
+        taskCompletedLabel.setAttribute('for', `${task.getID()}-completed`);
+        taskCompletedLabel.textContent = 'Completed';
+
+        taskDetailsContainer.append(taskDescription, taskPriority, taskCompleted, taskCompletedLabel);
+
+        taskDetailsContainer.dataset.expanded = 1;
+    } else {
+        taskDetailsContainer.replaceChildren();
+        taskDetailsContainer.dataset.expanded = 0;
+    }
 }
 
 const updateProjectList = (currentProjects) => {

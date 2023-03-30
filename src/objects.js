@@ -9,7 +9,9 @@ const todoTask = (title) => {
     let _notes = [];
     let _checklist = false;
     let _title = title;
+    let _id = title.replace(/\s+/g, '');
 
+    const getID = () => _id;
     const getTitle = () => _title;
     const getDescription = () => _description;
     const setDescription = (description) => _description = description;
@@ -29,6 +31,7 @@ const todoTask = (title) => {
     const setDueDate = (date) => _dueDate =  parseISO(date);
 
     return {
+        getID,
         getTitle, 
         getDescription,
         setDescription,
@@ -60,10 +63,10 @@ const project = (name) => {
                 return 'ERROR';
         }
     }
-    const removeTask = (taskName) => {
+    const removeTask = (taskID) => {
         if (_tasks.length >= 1) {
             for (let i in _tasks) {
-                if (_tasks[i].getTitle() === taskName) {
+                if (_tasks[i].getID() === taskID) {
                     return _tasks.splice(i, 1);
                 }
             } 
@@ -113,6 +116,9 @@ const createTestData = () => {
     testTask1.setDueDate('2000-04-21');
     const testTask2 = todoTask('Task Two');
     testTask2.setDueDate('1980-11-03');
+    testTask2.setDescription('description test');
+    testTask2.setPriority(1);
+    testTask2.setCompletion();
     const testTask3 = todoTask('Task Three');
 
     testProject1.addTask(testTask1);
