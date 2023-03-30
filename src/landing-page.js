@@ -23,23 +23,39 @@ const pageLoad = () => {
     updateProjectList(newList);
 };
 
+const generateHeader = () => {
+    const header = document.querySelector('#header');
+    header.innerHTML = "<h2>WT To-do List</h2><h3>Let's get organized!</h3>";
+};
+
 const updateProjectDisplay = (projectName, currentProjects) => {
     const projectDisplay = document.querySelector('#project-container')
+    const projectHeader = document.createElement('div');
+    projectHeader.id = 'project-header';
+
+    projectDisplay.replaceChildren();
 
     if (projectName) {
-        projectDisplay.replaceChildren();
         const newProject = currentProjects.getProjectByName(projectName);
-        projectDisplay.textContent = newProject.getName();
+        projectHeader.textContent = newProject.getName();
+        projectDisplay.appendChild(projectHeader);
+
+        const taskContainer = document.createElement('div');
+        taskContainer.id = 'project-task-container';
+
         for (let task of newProject.getTasks()) {
             const taskDisplay = updateTaskDisplay(task, newProject, currentProjects);
-            projectDisplay.appendChild(taskDisplay);
+            taskContainer.appendChild(taskDisplay);
 
         }
+        projectDisplay.appendChild(taskContainer);
         projectDisplay.appendChild(generateTaskForm(newProject, currentProjects));
     } else {
         const defaultProject = project('Untitled Project');
-        projectDisplay.textContent = defaultProject.getName();
+        projectHeader.textContent = defaultProject.getName();
+        projectDisplay.appendChild(projectHeader);
     }
+
 };
 
 const updateTaskDisplay = (task, currentProject, currentProjects) => {
@@ -47,7 +63,7 @@ const updateTaskDisplay = (task, currentProject, currentProjects) => {
     taskDiv.id = task.getID();
     taskDiv.dataset.title = task.getTitle();
     taskDiv.dataset.dueDate = task.getDueDate();
-    taskDiv.className = 'task-container';
+    taskDiv.className = 'task-info';
     taskDiv.textContent = `${task.getTitle()} || Due: ${task.getDueDate()}`;
 
     let showTaskDetails = document.createElement('div');
@@ -55,6 +71,7 @@ const updateTaskDisplay = (task, currentProject, currentProjects) => {
     showTaskDetails.id = `${task.getID()}-details-button`;
     showTaskDetails.textContent = '...';
     showTaskDetails.addEventListener('click', () => {
+        taskDiv.parentNode.insertBefore(taskDetails, taskDiv.nextSibling);
         expandTask(task);
     })
 
@@ -73,14 +90,14 @@ const updateTaskDisplay = (task, currentProject, currentProjects) => {
     taskDetails.id = `${task.getID()}-details`;
     taskDetails.dataset.expanded = 0;
 
-    taskDiv.append(showTaskDetails, removeTaskButton, taskDetails);
+    taskDiv.append(showTaskDetails, removeTaskButton);
 
     return taskDiv;
 }
 
 const expandTask = (task) => {
     let taskDetailsContainer = document.querySelector(`#${task.getID()}-details`);
-    
+
     if (taskDetailsContainer.dataset.expanded == 0) {
         let taskDescription = document.createElement('div');
         taskDescription.className = 'task-description';
@@ -90,15 +107,19 @@ const expandTask = (task) => {
         taskPriority.className = 'task-priority';
         taskPriority.innerText = task.getPriority();
 
-        let taskCompleted = document.createElement('input');
-        taskCompleted.setAttribute('name', 'task-completed');
-        taskCompleted.setAttribute('id', `${task.getID()}-completed`);
-        taskCompleted.setAttribute('type', 'checkbox');
+        let taskCompleted = document.createElement('div');
+        taskCompleted.className = 'task-completed-container';
+
+        let taskCompletedCheckbox = document.createElement('input');
+        taskCompletedCheckbox.setAttribute('name', 'task-completed');
+        taskCompletedCheckbox.setAttribute('id', `${task.getID()}-completed`);
+        taskCompletedCheckbox.setAttribute('type', 'checkbox');
         let taskCompletedLabel = document.createElement('label');
         taskCompletedLabel.setAttribute('for', `${task.getID()}-completed`);
         taskCompletedLabel.textContent = 'Completed';
 
-        taskDetailsContainer.append(taskDescription, taskPriority, taskCompleted, taskCompletedLabel);
+        taskCompleted.append(taskCompletedLabel, taskCompletedCheckbox);
+        taskDetailsContainer.append(taskDescription, taskPriority, taskCompleted);
 
         taskDetailsContainer.dataset.expanded = 1;
     } else {
@@ -128,6 +149,7 @@ const updateProjectList = (currentProjects) => {
 
 export {
     pageLoad,
+    generateHeader,
     updateProjectDisplay,
     updateProjectList
 };
