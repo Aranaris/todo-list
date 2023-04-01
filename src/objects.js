@@ -97,7 +97,10 @@ const projectList = () => {
             return 'ERROR';
         }
     };
-    const addNewProject = (project) => _projects.push(project);
+    const addNewProject = (project) => {
+        _projects.push(project);
+        console.log(localStorage.userProjects);
+    };
 
     return {
         getAllProjects,
@@ -127,6 +130,8 @@ const createTestData = () => {
 
     testProjectList1.addNewProject(testProject1);
     testProjectList1.addNewProject(testProject2);
+
+    localStorage.setItem('userProjects', testProjectList1);
 
     return testProjectList1;
 
