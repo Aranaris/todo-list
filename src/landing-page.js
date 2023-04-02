@@ -1,8 +1,6 @@
 import { todoTask, project, projectList } from "./objects";
-import { createTestData } from "./objects";
+import { checkLocalStorage, createTestData } from "./update-data";
 import generateTaskForm from "./forms";
-
-const newList = createTestData();
 
 const pageLoad = () => {
     let content = document.querySelector('#content');
@@ -18,9 +16,14 @@ const pageLoad = () => {
 
     content.append(header, projectContainer, projectListContainer, footer);
 
-
-    updateProjectDisplay('Test Project 2', newList);
-    updateProjectList(newList);
+    if (checkLocalStorage()) {
+        let displayProjectList = JSON.parse(localStorage.getItem('userProjects'));
+        updateProjectDisplay(displayProjectList.getDefaultProject(), displayProjectList);
+        updateProjectList(displayProjectList);
+    } else {
+        createTestData();
+    }
+    
 };
 
 const generateHeader = () => {
@@ -28,28 +31,26 @@ const generateHeader = () => {
     header.innerHTML = "<h2>WT To-do List</h2><h3>Let's get organized!</h3>";
 };
 
-const updateProjectDisplay = (projectName, currentProjects) => {
+const updateProjectDisplay = (userProject, currentProjects) => {
     const projectDisplay = document.querySelector('#project-container')
     const projectHeader = document.createElement('div');
     projectHeader.id = 'project-header';
 
     projectDisplay.replaceChildren();
 
-    if (projectName) {
-        const newProject = currentProjects.getProjectByName(projectName);
-        projectHeader.textContent = newProject.getName();
+    if (userProject) {
+        projectHeader.textContent = userProject.getName();
         projectDisplay.appendChild(projectHeader);
 
         const taskContainer = document.createElement('div');
         taskContainer.id = 'project-task-container';
 
-        for (let task of newProject.getTasks()) {
-            const taskDisplay = updateTaskDisplay(task, newProject, currentProjects);
+        for (let task of userProject.getTasks()) {
+            const taskDisplay = updateTaskDisplay(task, userProject, currentProjects);
             taskContainer.appendChild(taskDisplay);
-
         }
         projectDisplay.appendChild(taskContainer);
-        projectDisplay.appendChild(generateTaskForm(newProject, currentProjects));
+        projectDisplay.appendChild(generateTaskForm(userProject, currentProjects));
     } else {
         const defaultProject = project('Untitled Project');
         projectHeader.textContent = defaultProject.getName();

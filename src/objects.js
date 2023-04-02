@@ -97,50 +97,26 @@ const projectList = () => {
             return 'ERROR';
         }
     };
+    const getDefaultProject = () => {
+        if (_projects.length > 0) {
+            return _projects[0];
+        }
+    };
+
     const addNewProject = (project) => {
         _projects.push(project);
-        console.log(localStorage.userProjects);
     };
 
     return {
         getAllProjects,
         getProjectByName,
+        getDefaultProject,
         addNewProject
     };
 };
 
-const createTestData = () => {
-    const testProjectList1 = projectList();
-    
-    const testProject1 = project('Test Project 1');
-    const testProject2 = project('Test Project 2');
-
-    const testTask1 = todoTask('Task One');
-    testTask1.setDueDate('2000-04-21');
-    const testTask2 = todoTask('Task Two');
-    testTask2.setDueDate('1980-11-03');
-    testTask2.setDescription('description test');
-    testTask2.setPriority(1);
-    testTask2.setCompletion();
-    const testTask3 = todoTask('Task Three');
-
-    testProject1.addTask(testTask1);
-    testProject2.addTask(testTask2);
-    testProject2.addTask(testTask3);
-
-    testProjectList1.addNewProject(testProject1);
-    testProjectList1.addNewProject(testProject2);
-
-    localStorage.setItem('userProjects', testProjectList1);
-
-    return testProjectList1;
-
-    
-}
-
 export {
     todoTask,
     project,
-    projectList,
-    createTestData
+    projectList
 };
