@@ -17,7 +17,10 @@ const pageLoad = () => {
     content.append(header, projectContainer, projectListContainer, footer);
 
     if (checkLocalStorage()) {
-        let displayProjectList = JSON.parse(localStorage.getItem('userProjects'));
+        let displayProjectList = projectList();
+        let storedValues = JSON.parse(localStorage.getItem('userProjects'));
+        let newProject = project(storedValues['projectname']);
+        displayProjectList.addNewProject(newProject);
         updateProjectDisplay(displayProjectList.getDefaultProject(), displayProjectList);
         updateProjectList(displayProjectList);
     } else {

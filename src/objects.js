@@ -2,10 +2,10 @@ import endOfToday from "date-fns/endOfToday";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 
-const todoTask = (title) => {
-    let _description = '';
-    let _dueDate = endOfToday();
-    let _priority = undefined;
+const todoTask = (title, dueDate=endOfToday(), description='', priority=undefined) => {
+    let _description = description;
+    let _dueDate = dueDate;
+    let _priority = priority;
     let _notes = [];
     let _checklist = false;
     let _title = title;
@@ -29,6 +29,14 @@ const todoTask = (title) => {
     const getCompletion = () => _checklist;
     const getDueDate = () => format(_dueDate, 'MMM dd, yyyy (ccc)');
     const setDueDate = (date) => _dueDate =  parseISO(date);
+    const toJSON = () => {
+        return {
+            taskTitle: _title,
+            taskDueDate: getDueDate(),
+            taskDescription: _description,
+            taskPriority: _priority.toString()
+        };
+    };
 
     return {
         getID,
@@ -42,7 +50,8 @@ const todoTask = (title) => {
         setCompletion,
         getCompletion,
         getDueDate, 
-        setDueDate
+        setDueDate,
+        toJSON
     };
 };
 
@@ -79,7 +88,17 @@ const project = (name) => {
         _tasks.push(newTask);
     }
 
-    return {setName, getName, getTaskByName, removeTask, getTasks, addTask};
+    const toJSON = () => {
+        let newList = [];
+        for (let i in _tasks) {
+            newList.push(_tasks[i].toJSON());
+        }
+        return {
+            projectname: _name,
+            tasks: JSON.stringify(newList)
+        };
+    }
+    return {setName, getName, getTaskByName, removeTask, getTasks, addTask, toJSON};
 };
 
 const projectList = () => {

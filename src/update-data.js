@@ -14,7 +14,7 @@ const createTestData = () => {
     const testProject1 = project('Test Project 1');
     const testProject2 = project('Test Project 2');
 
-    const testTask1 = todoTask('Task One');
+    const testTask1 = todoTask('Task One','','test description',1);
     testTask1.setDueDate('2000-04-21');
     const testTask2 = todoTask('Task Two');
     testTask2.setDueDate('1980-11-03');
@@ -30,8 +30,8 @@ const createTestData = () => {
     testProjectList1.addNewProject(testProject1);
     testProjectList1.addNewProject(testProject2);
 
-    localStorage.setItem('userProjects', JSON.stringify(testProjectList1));
-    console.log(JSON.stringify(testProjectList1));
+    localStorage.setItem('userProjects', JSON.stringify(testProject1.toJSON()));
+    console.log(JSON.stringify(testProject1.toJSON()));
 }
 
 export {
