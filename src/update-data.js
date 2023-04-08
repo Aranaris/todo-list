@@ -1,15 +1,35 @@
 import { todoTask, project, projectList } from "./objects";
 
 const checkLocalStorage = () => {
-    if (localStorage.getItem('userProjects')) {
+    if (localStorage.getItem('userProjectList')) {
         return true;
     } else {
         return false;
     }
 }
 
+const buildProjectsFromJSON = (projectListJSON, user) => {
+    let newProjectList = projectList(user);
+    if (projectListJSON.length > 0) {
+        for (let i in projectListJSON) {
+            let newProject = project(projectListJSON[i].projectname);
+            let newTasks = projectListJSON[i].tasks;
+            for (let j in newTasks) {
+                newProject.addTask(todoTask(
+                    newTasks[j].taskTitle,
+                    newTasks[j].taskDueDate,
+                    newTasks[j].taskDescription,
+                    newTasks[j].taskPriority
+                ));
+            }
+            newProjectList.addNewProject(newProject);
+        }
+    }
+    return newProjectList;
+}
+
 const createTestData = () => {
-    const testProjectList1 = projectList();
+    const testProjectList1 = projectList('Test User');
     
     const testProject1 = project('Test Project 1');
     const testProject2 = project('Test Project 2');
@@ -30,11 +50,17 @@ const createTestData = () => {
     testProjectList1.addNewProject(testProject1);
     testProjectList1.addNewProject(testProject2);
 
-    localStorage.setItem('userProjects', JSON.stringify(testProject1.toJSON()));
-    console.log(JSON.stringify(testProject1.toJSON()));
+    updateLocalStorage(testProjectList1);
+}
+
+const updateLocalStorage = (currentProjectList) => {
+    localStorage.setItem('userProjectList', currentProjectList.toJSON());
+    localStorage.setItem('user', currentProjectList.getUser());
 }
 
 export {
     checkLocalStorage,
-    createTestData
+    buildProjectsFromJSON,
+    createTestData,
+    updateLocalStorage
 };

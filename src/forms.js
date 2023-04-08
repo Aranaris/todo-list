@@ -36,7 +36,7 @@ const generateTaskForm = (newProject, currentProjects, existingTask) => {
                 newTask.setDueDate(taskDueDate.value);
             }
             newProject.addTask(newTask);
-            updateProjectDisplay(newProject.getName(), currentProjects);
+            updateProjectDisplay(newProject, currentProjects);
         });
     }
 

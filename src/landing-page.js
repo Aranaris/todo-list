@@ -1,5 +1,5 @@
 import { todoTask, project, projectList } from "./objects";
-import { checkLocalStorage, createTestData } from "./update-data";
+import { checkLocalStorage, buildProjectsFromJSON, createTestData, updateLocalStorage } from "./update-data";
 import generateTaskForm from "./forms";
 
 const pageLoad = () => {
@@ -16,22 +16,21 @@ const pageLoad = () => {
 
     content.append(header, projectContainer, projectListContainer, footer);
 
-    if (checkLocalStorage()) {
-        let displayProjectList = projectList();
-        let storedValues = JSON.parse(localStorage.getItem('userProjects'));
-        let newProject = project(storedValues['projectname']);
-        displayProjectList.addNewProject(newProject);
-        updateProjectDisplay(displayProjectList.getDefaultProject(), displayProjectList);
-        updateProjectList(displayProjectList);
-    } else {
+    if (!checkLocalStorage()) {
         createTestData();
     }
+
+    let currentUser = localStorage.getItem('user');
+    let displayProjectList = buildProjectsFromJSON(JSON.parse(localStorage.getItem('userProjectList')), currentUser);
     
+    generateHeader(displayProjectList.getUser());
+    updateProjectDisplay(displayProjectList.getDefaultProject(), displayProjectList);
+    updateProjectList(displayProjectList);
 };
 
-const generateHeader = () => {
+const generateHeader = (user) => {
     const header = document.querySelector('#header');
-    header.innerHTML = "<h2>WT To-do List</h2><h3>Let's get organized!</h3>";
+    header.innerHTML = `<h2>WT To-do List</h2><h3>Welcome, ${user}! Let's get organized!</h3>`;
 };
 
 const updateProjectDisplay = (userProject, currentProjects) => {
@@ -40,7 +39,7 @@ const updateProjectDisplay = (userProject, currentProjects) => {
     projectHeader.id = 'project-header';
 
     projectDisplay.replaceChildren();
-
+    updateLocalStorage(currentProjects);
     if (userProject) {
         projectHeader.textContent = userProject.getName();
         projectDisplay.appendChild(projectHeader);
@@ -86,7 +85,7 @@ const updateTaskDisplay = (task, currentProject, currentProjects) => {
     removeTaskButton.textContent = 'X';
     removeTaskButton.addEventListener('click', () => {
         currentProject.removeTask(task.getID());
-        updateProjectDisplay(currentProject.getName(), currentProjects);
+        updateProjectDisplay(currentProject, currentProjects);
     })
 
     let taskDetails = document.createElement('div');
@@ -142,7 +141,7 @@ const updateProjectList = (currentProjects) => {
         projectButton.setAttribute('id',`$(allProjects[i].getName())-button`);
         projectButton.innerText = allProjects[i].getName();
         projectButton.addEventListener('click', (event) => {
-            updateProjectDisplay(allProjects[i].getName(), currentProjects);
+            updateProjectDisplay(allProjects[i], currentProjects);
             updateProjectList(currentProjects);
         })
 

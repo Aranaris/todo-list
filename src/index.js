@@ -1,4 +1,3 @@
-import { pageLoad, generateHeader } from "./landing-page";
+import { pageLoad } from "./landing-page";
 
 pageLoad();
-generateHeader();

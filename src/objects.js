@@ -2,9 +2,9 @@ import endOfToday from "date-fns/endOfToday";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 
-const todoTask = (title, dueDate=endOfToday(), description='', priority=undefined) => {
+const todoTask = (title, dueDate=format(endOfToday(), 'yyyy-MM-dd'), description='', priority=undefined) => {
     let _description = description;
-    let _dueDate = dueDate;
+    let _dueDate = parseISO(dueDate);
     let _priority = priority;
     let _notes = [];
     let _checklist = false;
@@ -32,9 +32,9 @@ const todoTask = (title, dueDate=endOfToday(), description='', priority=undefine
     const toJSON = () => {
         return {
             taskTitle: _title,
-            taskDueDate: getDueDate(),
+            taskDueDate: _dueDate,
             taskDescription: _description,
-            taskPriority: _priority.toString()
+            taskPriority: _priority
         };
     };
 
@@ -95,14 +95,15 @@ const project = (name) => {
         }
         return {
             projectname: _name,
-            tasks: JSON.stringify(newList)
+            tasks: newList
         };
     }
     return {setName, getName, getTaskByName, removeTask, getTasks, addTask, toJSON};
 };
 
-const projectList = () => {
+const projectList = (user) => {
     let _projects = [];
+    let _user = user;
     
     const getAllProjects = () => _projects;
     const getProjectByName = (projectName) => {
@@ -118,7 +119,7 @@ const projectList = () => {
     };
     const getDefaultProject = () => {
         if (_projects.length > 0) {
-            return _projects[0];
+            return _projects.at(-1);
         }
     };
 
@@ -126,11 +127,23 @@ const projectList = () => {
         _projects.push(project);
     };
 
+    const getUser = () => _user;
+
+    const toJSON = () => {
+        let JSONList = [];
+        for (let i in _projects) {
+            JSONList.push(_projects[i].toJSON());
+        }
+        return JSON.stringify(JSONList);
+    }
+
     return {
         getAllProjects,
         getProjectByName,
         getDefaultProject,
-        addNewProject
+        addNewProject,
+        getUser,
+        toJSON
     };
 };
 
