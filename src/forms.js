@@ -47,13 +47,36 @@ const generateTaskForm = (newProject, currentProjects, existingTask) => {
     return newTaskForm;
 }
 
-const generateProjectForm = () => {
-    const newProjectForm = document.createElement('form');
+const editProjectForm = (userProject, currentProjectList) => {
+    const newProjectForm = document.createElement('div');
     newProjectForm.className = 'new-project-container';
+    
+    const projectTitleLabel = document.createElement('label');
+    projectTitleLabel.setAttribute('for', `${userProject.getName()}-input`);
+
+    const projectTitleInput = document.createElement('input');
+    projectTitleInput.setAttribute('type', 'text');
+    projectTitleInput.setAttribute('id',`${userProject.getName()}-input`);
+    projectTitleInput.setAttribute('name',`${userProject.getName()}-input`);
+    projectTitleInput.setAttribute('value', userProject.getName());
+
+    let updateProjectButton = document.createElement('button');
+    updateProjectButton.className = 'update-project-button';
+    updateProjectButton.textContent = 'Update';
+    updateProjectButton.addEventListener('click', () => {
+        userProject.setName(projectTitleInput.value);
+        updateProjectDisplay(userProject, currentProjectList);
+        updateProjectList(currentProjectList);
+    })
+    
+    newProjectForm.append(projectTitleLabel, projectTitleInput, updateProjectButton);
     
     return newProjectForm;
 }
 
 
 
-export default generateTaskForm;
+export {
+    generateTaskForm, 
+    editProjectForm,
+};

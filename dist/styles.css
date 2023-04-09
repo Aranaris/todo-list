@@ -43,25 +43,31 @@ input,select{vertical-align:middle}
 
 #project-list-container {
     display: flex;
-    padding: 10px;
+    column-gap: 10px;
     justify-content: start;
+    align-items: center;
 }
 
 #project-task-container {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    padding-top: 10px;
+    row-gap: 10px;
 }
 
 #project-header {
+    display: flex;
+    justify-content: start;
+    column-gap: 10px;
     font-weight: bolder;
     padding-bottom: 10px;
 }
 
 .task-info {
     display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+    justify-content: start;
+    column-gap: 20px;
+    align-items: center;
 }
 
 .new-task-container {
@@ -75,6 +81,7 @@ input,select{vertical-align:middle}
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-evenly;
+    row-gap: 10px;
 }
 
 .show-task-details > * {

@@ -8,6 +8,22 @@ const checkLocalStorage = () => {
     }
 }
 
+const generateDefaultProject = (userProjectList) => {
+    const defaultProject = project('Untitled Project');
+
+    if (!userProjectList) {
+        const username = 'New User';
+        const newProjectList = projectList(username);
+        newProjectList.addNewProject(defaultProject);
+        updateLocalStorage(newProjectList);
+    } else {
+        userProjectList.addNewProject(defaultProject);
+        updateLocalStorage(userProjectList);
+    }
+    console.log(defaultProject.getName())
+    return defaultProject;
+}
+
 const buildProjectsFromJSON = (projectListJSON, user) => {
     let newProjectList = projectList(user);
     if (projectListJSON.length > 0) {
@@ -60,6 +76,7 @@ const updateLocalStorage = (currentProjectList) => {
 
 export {
     checkLocalStorage,
+    generateDefaultProject,
     buildProjectsFromJSON,
     createTestData,
     updateLocalStorage

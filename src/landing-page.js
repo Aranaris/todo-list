@@ -1,6 +1,6 @@
 import { todoTask, project, projectList } from "./objects";
-import { checkLocalStorage, buildProjectsFromJSON, createTestData, updateLocalStorage } from "./update-data";
-import generateTaskForm from "./forms";
+import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, createTestData, updateLocalStorage } from "./update-data";
+import { generateTaskForm, editProjectForm } from "./forms";
 
 const pageLoad = () => {
     let content = document.querySelector('#content');
@@ -17,7 +17,7 @@ const pageLoad = () => {
     content.append(header, projectContainer, projectListContainer, footer);
 
     if (!checkLocalStorage()) {
-        createTestData();
+        generateDefaultProject();
     }
 
     let currentUser = localStorage.getItem('user');
@@ -58,6 +58,17 @@ const updateProjectDisplay = (userProject, currentProjects) => {
         projectHeader.textContent = defaultProject.getName();
         projectDisplay.appendChild(projectHeader);
     }
+
+    const projectNameEdit = document.createElement('i');
+    projectNameEdit.id = 'edit-project-name';
+    projectNameEdit.classList.add('fi', 'fi-sr-edit');
+    projectNameEdit.addEventListener('click', () => {
+        projectHeader.replaceChildren();
+        projectHeader.append(editProjectForm(userProject, currentProjects));
+    });
+    
+    projectHeader.appendChild(projectNameEdit);
+
 
 };
 
@@ -147,6 +158,16 @@ const updateProjectList = (currentProjects) => {
 
         projectListContainer.appendChild(projectButton);
     }
+
+    const addNewProjectButton = document.createElement('i');
+    addNewProjectButton.id = 'add-new-project-button';
+    addNewProjectButton.classList.add('fi', 'fi-sr-plus');
+    addNewProjectButton.addEventListener('click', () => {
+        projectListContainer.append(editProjectForm(generateDefaultProject(currentProjects), currentProjects));
+        addNewProjectButton.remove();
+    });
+
+    projectListContainer.append(addNewProjectButton);
 
 }
 
