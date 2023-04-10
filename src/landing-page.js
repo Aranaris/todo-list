@@ -1,5 +1,5 @@
-import { todoTask, project, projectList } from "./objects";
-import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, createTestData, updateLocalStorage } from "./update-data";
+import { project } from "./objects";
+import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, updateLocalStorage } from "./update-data";
 import { generateTaskForm, editProjectForm } from "./forms";
 
 const pageLoad = () => {
