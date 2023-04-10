@@ -1,4 +1,4 @@
-import { todoTask, project, projectList } from "./objects";
+import { todoTask } from "./objects";
 import { updateProjectDisplay, updateProjectList } from "./landing-page";
 
 const generateTaskForm = (newProject, currentProjects, existingTask) => {
