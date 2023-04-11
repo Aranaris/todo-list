@@ -82,6 +82,7 @@ input,select{vertical-align:middle}
     align-items: flex-end;
     justify-content: space-evenly;
     row-gap: 10px;
+    background-color: whitesmoke;
 }
 
 .show-task-details > * {
