@@ -18,8 +18,9 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '*' # https://github.com/actions/setup-node#supported-version-syntax
+        cache: 'yarn'
 
-    - run: npm install
+    - run: yarn install --frozen-lockfile
 
     - name: eslint
-      run: npx eslint src
+      run: yarn exec eslint src
