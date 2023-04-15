@@ -1,7 +1,7 @@
 import { todoTask, project, projectList } from "./objects";
 
-const checkLocalStorage = () => {
-    if (localStorage.getItem('userProjectList')) {
+const checkLocalStorage = (param='userProjectList') => {
+    if (localStorage.getItem(param)) {
         return true;
     } else {
         return false;
@@ -74,10 +74,24 @@ const updateLocalStorage = (currentProjectList) => {
     localStorage.setItem('user', currentProjectList.getUser());
 }
 
+const updateWeather = (location='Los Angeles') => {
+    localStorage.setItem('userLocation', location);
+}
+
+const getWeatherFromStorage = () => {
+    if (checkLocalStorage('userLocation')) {
+        return localStorage.getItem('userLocation');
+    } else {
+        return 'london'
+    }
+}
+
 export {
     checkLocalStorage,
     generateDefaultProject,
     buildProjectsFromJSON,
     createTestData,
-    updateLocalStorage
+    updateLocalStorage,
+    updateWeather,
+    getWeatherFromStorage
 };

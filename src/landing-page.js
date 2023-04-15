@@ -1,6 +1,7 @@
 import { project } from "./objects";
-import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, updateLocalStorage } from "./update-data";
+import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, updateLocalStorage, getWeatherFromStorage } from "./update-data";
 import { generateTaskForm, editProjectForm } from "./forms";
+import { generateWeatherObject } from "./weather";
 
 const pageLoad = () => {
     let content = document.querySelector('#content');
@@ -26,11 +27,15 @@ const pageLoad = () => {
     generateHeader(displayProjectList.getUser());
     updateProjectDisplay(displayProjectList.getDefaultProject(), displayProjectList);
     updateProjectList(displayProjectList);
+    generateInfoPane();
 };
 
 const generateHeader = (user) => {
     const header = document.querySelector('#header');
-    header.innerHTML = `<h2>WT To-do List</h2><h3>Welcome, ${user}! Let's get organized!</h3>`;
+    let welcomeHeader = document.createElement('div');
+    welcomeHeader.id = 'welcome-header';
+    welcomeHeader.innerHTML = `<br><h2>WT To-do List</h2><h3>Welcome, ${user}! Let's get organized!</h3><br>`;
+    header.append(welcomeHeader);
 };
 
 const updateProjectDisplay = (userProject, currentProjects) => {
@@ -171,9 +176,23 @@ const updateProjectList = (currentProjects) => {
 
 }
 
+const generateInfoPane = async () => {
+    let header = document.querySelector('#header');
+    let weatherData = await generateWeatherObject(getWeatherFromStorage());
+    let infoPane = document.createElement('div');
+    let weatherIcon = document.createElement('img');
+    weatherIcon.src = `http:${weatherData.condition.icon}`;
+    infoPane.id = 'header-info-pane';
+    infoPane.innerHTML = `Weather: ${weatherData.location} <br> Conditions: ${weatherData.condition.text} <br> Temperature: ${weatherData.temp_f} <br> Precipitation: ${weatherData.precip_in}`;
+    infoPane.append(weatherIcon);
+    console.log(weatherData);
+    header.append(infoPane);
+}
+
 export {
     pageLoad,
     generateHeader,
     updateProjectDisplay,
-    updateProjectList
+    updateProjectList,
+    generateInfoPane
 };
