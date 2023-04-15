@@ -1,5 +1,6 @@
 async function _getWeatherDataFromAPI(location) {
-    let requestURL = `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${location}&aqi=no`;
+    const WEATHER_API_KEY = '91689c84e8c6409687505241231304'
+    let requestURL = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${location}&aqi=no`;
     let response = await fetch(requestURL, {
         mode: 'cors'
     });
