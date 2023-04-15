@@ -1,6 +1,6 @@
 import { project } from "./objects";
 import { checkLocalStorage, generateDefaultProject, buildProjectsFromJSON, updateLocalStorage, getWeatherFromStorage } from "./update-data";
-import { generateTaskForm, editProjectForm } from "./forms";
+import { generateTaskForm, editProjectForm, editLocationForm } from "./forms";
 import { generateWeatherObject } from "./weather";
 
 const pageLoad = () => {
@@ -178,13 +178,26 @@ const updateProjectList = (currentProjects) => {
 
 const generateInfoPane = async () => {
     let header = document.querySelector('#header');
+    if (document.getElementById('header-info-pane')) {
+        document.getElementById('header-info-pane').remove();
+    }
     let weatherData = await generateWeatherObject(getWeatherFromStorage());
     let infoPane = document.createElement('div');
     let weatherIcon = document.createElement('img');
     weatherIcon.src = `http:${weatherData.condition.icon}`;
     infoPane.id = 'header-info-pane';
     infoPane.innerHTML = `Weather: ${weatherData.location} <br> Conditions: ${weatherData.condition.text} <br> Temperature: ${weatherData.temp_f} <br> Precipitation: ${weatherData.precip_in}`;
-    infoPane.append(weatherIcon);
+
+    const weatherLocationEdit = document.createElement('i');
+    weatherLocationEdit.id = 'edit-project-name';
+    weatherLocationEdit.classList.add('fi', 'fi-sr-edit');
+    weatherLocationEdit.addEventListener('click', () => {
+        infoPane.replaceChildren();
+        infoPane.append(editLocationForm());
+    });
+
+    infoPane.append(weatherIcon, weatherLocationEdit);
+    
     console.log(weatherData);
     header.append(infoPane);
 }

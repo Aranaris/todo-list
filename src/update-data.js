@@ -82,7 +82,7 @@ const getWeatherFromStorage = () => {
     if (checkLocalStorage('userLocation')) {
         return localStorage.getItem('userLocation');
     } else {
-        return 'london'
+        return 'Los Angeles';
     }
 }
 

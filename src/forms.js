@@ -1,5 +1,6 @@
 import { todoTask } from "./objects";
-import { updateProjectDisplay, updateProjectList } from "./landing-page";
+import { updateProjectDisplay, updateProjectList, generateInfoPane } from "./landing-page";
+import { updateWeather, getWeatherFromStorage } from "./update-data";
 
 const generateTaskForm = (newProject, currentProjects, existingTask) => {
     const newTaskForm = document.createElement('div');
@@ -74,9 +75,35 @@ const editProjectForm = (userProject, currentProjectList) => {
     return newProjectForm;
 }
 
+const editLocationForm = (currentLocation=getWeatherFromStorage()) => {
+    
+    const newLocationForm = document.createElement('div');
+    newLocationForm.className = 'new-location-container';
 
+    const locationLabel = document.createElement('label');
+    locationLabel.setAttribute('for', 'location-input');
+
+    const locationInput = document.createElement('input');
+    locationInput.setAttribute('type', 'text');
+    locationInput.setAttribute('id', 'location-input');
+    locationInput.setAttribute('name', 'location-input');
+    locationInput.setAttribute('value', currentLocation);
+
+    let updateLocationButton = document.createElement('button');
+    updateLocationButton.className = 'update-location-button';
+    updateLocationButton.textContent = 'Update';
+    updateLocationButton.addEventListener('click', () => {
+        updateWeather(locationInput.value);
+        generateInfoPane();
+    })
+
+    newLocationForm.append(locationLabel, locationInput, updateLocationButton);
+
+    return newLocationForm;
+}
 
 export {
     generateTaskForm, 
     editProjectForm,
+    editLocationForm
 };
