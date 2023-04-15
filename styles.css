@@ -27,10 +27,11 @@ input,select{vertical-align:middle}
 
 #header {
     background-color: aliceblue;
-    padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     line-height: 2;
+    padding: 0 10px;
 }
 
 #project-container {
@@ -91,4 +92,16 @@ input,select{vertical-align:middle}
 
 #project-list-container > button {
     margin: 5px;
+}
+
+#header-info-pane {
+    background-color: lightskyblue;
+    display: flex;
+    align-items: start;
+    padding: 15px;
+
+}
+
+#header-info-pane > img {
+
 }
